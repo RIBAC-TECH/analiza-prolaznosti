@@ -69,7 +69,7 @@
         $('#count8').text(count8);
         $('#count9').text(count9);
         $('#count10').text(count10);
-        $('#prol').text(prol.toFixed(2).replace(".", ",") + '%');
+        $('#prol').text(prol.toFixed(2).replace(".", ",").replace("NaN", 0) + '%');
       });
     });
   </script>
