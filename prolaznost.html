@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background-color: #43434c;
+      color: white;
+      font-family: "Courier New", monospace;
+    }
+    .container {
+      text-align: center;
+    }
+    button {
+        background-color: #595966;
+        color: white;
+        font-family: "Courier New", monospace;
+      }
+    textarea {
+        background-color: #595966;
+        color: white;
+      }
+    th, td {
+        text-align: center;
+        padding: 8px;
+      }
+  </style>
+  <title>ANALIZA PROLAZNOSTI</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#analyzeButton').click(function() {
+        var htmlText = $('#htmlTextArea').val();
+
+        // Inicijalne promenljive
+        var countND = 0;
+        var count5 = 0;
+        var count6 = 0;
+        var count7 = 0;
+        var count8 = 0;
+        var count9 = 0;
+        var count10 = 0;
+
+        // Pronadji tekst
+        var regexND = /4\)\.setValue\("ND"\)/g;
+        var regex5 = /4\)\.setValue\("5"\)/g;
+        var regex6 = /4\)\.setValue\("6"\)/g;
+        var regex7 = /4\)\.setValue\("7"\)/g;
+        var regex8 = /4\)\.setValue\("8"\)/g;
+        var regex9 = /4\)\.setValue\("9"\)/g;
+        var regex10 = /4\)\.setValue\("10"\)/g;
+
+        // Prebroj instance
+        countND = (htmlText.match(regexND) || []).length;
+        count5 = (htmlText.match(regex5) || []).length;
+        count6 = (htmlText.match(regex6) || []).length;
+        count7 = (htmlText.match(regex7) || []).length;
+        count8 = (htmlText.match(regex8) || []).length;
+        count9 = (htmlText.match(regex9) || []).length;
+        count10 = (htmlText.match(regex10) || []).length;
+
+        // Izracunaj prolaznost
+        var prol = ((count6 + count7 + count8 + count9 + count10) / (count5 + count6 + count7 + count8 + count9 + count10)) * 100;
+
+        // Prikazi rezultate
+        $('#countND').text(countND);
+        $('#count5').text(count5);
+        $('#count6').text(count6);
+        $('#count7').text(count7);
+        $('#count8').text(count8);
+        $('#count9').text(count9);
+        $('#count10').text(count10);
+        $('#prol').text(prol.toFixed(2).replace(".", ",") + '%');
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+  <h1>ANALIZA PROLAZNOSTI</h1>
+  <fieldset>
+    <legend>Ovde unesite HTML kod</legend>
+  <textarea id="htmlTextArea" rows="10" cols="50"></textarea>
+  <br>
+  <button id="analyzeButton">Analiziraj</button>
+  </fieldset>
+  <h2>Rezultati analize:</h2>
+  <fieldset>
+  <table align="center">
+    <tr>
+      <th>ND</th>
+      <td><span id="countND"></span></td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td><span id="count5"></span></td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td><span id="count6"></span></td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td><span id="count7"></span></td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td><span id="count8"></span></td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td><span id="count9"></span></td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td><span id="count10"></span></td>
+    </tr>
+  </table>
+  <p>Prolaznost: <span id="prol"></span></p>
+  </fieldset>
+  <br>
+  <details>
+    <summary>Uputstvo</summary>
+    Nakon što otvorite rezultate (obavezno na računaru, ovaj postupak nije moguć na mobilnim uređajima), kliknite desnim tasterom miša na bilo koje mesto u tabeli i odaberite opciju "View page source". Otvoriće se prozor sa HTML kodom stranice sa rezultatima. Kopirajte ceo kod u polje na vrhu ove stranice i kliknite "Analiziraj". 
+  </details>
+</div>
+</body>
+</html>
