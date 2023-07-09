@@ -61,7 +61,7 @@
         // Izracunaj prolaznost
         var prol = ((count6 + count7 + count8 + count9 + count10) / (count5 + count6 + count7 + count8 + count9 + count10)) * 100;
 
-        // Prikazi rezultate
+        // Prikazi rezultate & auto reset
         $('#countND').text(countND);
         $('#count5').text(count5);
         $('#count6').text(count6);
@@ -70,6 +70,21 @@
         $('#count9').text(count9);
         $('#count10').text(count10);
         $('#prol').text(prol.toFixed(2).replace(".", ",").replace("NaN", 0) + '%');
+        if ($('#autoResetCheckbox').is(':checked')) {
+          $('#htmlTextArea').val('');5
+        }
+      });
+        // Reset dugme
+        $('#resetButton').click(function() {
+        $('#htmlTextArea').val('');
+        $('#countND').text('');
+        $('#count5').text('');
+        $('#count6').text('');
+        $('#count7').text('');
+        $('#count8').text('');
+        $('#count9').text('');
+        $('#count10').text('');
+        $('#prol').text('');
       });
     });
   </script>
@@ -79,39 +94,42 @@
   <h1>ANALIZA PROLAZNOSTI</h1>
   <fieldset>
     <legend>Ovde unesite HTML kod</legend>
-  <textarea id="htmlTextArea" rows="10" cols="50"></textarea>
+  <textarea id="htmlTextArea" rows="10" cols="50" style="resize: none;"></textarea>
   <br>
   <button id="analyzeButton">Analiziraj</button>
+  <button id="resetButton">Resetuj</button><br>
+  <input type="checkbox" id="autoResetCheckbox">
+  <label for="autoResetCheckbox">Auto reset</label>
   </fieldset>
   <h2>Rezultati analize:</h2>
   <fieldset>
   <table align="center">
     <tr>
-      <th>ND</th>
+      <th>ND:</th>
       <td><span id="countND"></span></td>
     </tr>
     <tr>
-      <th>5</th>
+      <th>5:</th>
       <td><span id="count5"></span></td>
     </tr>
     <tr>
-      <th>6</th>
+      <th>6:</th>
       <td><span id="count6"></span></td>
     </tr>
     <tr>
-      <th>7</th>
+      <th>7:</th>
       <td><span id="count7"></span></td>
     </tr>
     <tr>
-      <th>8</th>
+      <th>8:</th>
       <td><span id="count8"></span></td>
     </tr>
     <tr>
-      <th>9</th>
+      <th>9:</th>
       <td><span id="count9"></span></td>
     </tr>
     <tr>
-      <th>10</th>
+      <th>10:</th>
       <td><span id="count10"></span></td>
     </tr>
   </table>
