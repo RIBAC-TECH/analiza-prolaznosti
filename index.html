@@ -58,8 +58,9 @@
         count9 = (htmlText.match(regex9) || []).length;
         count10 = (htmlText.match(regex10) || []).length;
 
-        // Izracunaj prolaznost
+        // Izracunaj prolaznost i broj prijavljenih
         var prol = ((count6 + count7 + count8 + count9 + count10) / (count5 + count6 + count7 + count8 + count9 + count10)) * 100;
+        var prij = count5 + count6 + count7 + count8 + count9 + count10
 
         // Prikazi rezultate & auto reset
         $('#countND').text(countND);
@@ -70,6 +71,7 @@
         $('#count9').text(count9);
         $('#count10').text(count10);
         $('#prol').text(prol.toFixed(2).replace(".", ",").replace("NaN", 0) + '%');
+        $('#prij').text(prij);
         if ($('#autoResetCheckbox').is(':checked')) {
           $('#htmlTextArea').val('');5
         }
@@ -85,6 +87,7 @@
         $('#count9').text('');
         $('#count10').text('');
         $('#prol').text('');
+        $('#prij').text('');
       });
     });
   </script>
@@ -133,7 +136,7 @@
       <td><span id="count10"></span></td>
     </tr>
   </table>
-  <p>Prolaznost: <span id="prol"></span></p>
+  <p>Polagalo: <span id="prij"></span> || Prolaznost: <span id="prol"></span></p>
   </fieldset>
   <br>
   <details>
