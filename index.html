@@ -39,6 +39,7 @@
         var count8 = 0;
         var count9 = 0;
         var count10 = 0;
+        var element1, element2, element3;
 
         // Pronadji tekst
         var regexND = /4\)\.setValue\("ND"\)/g;
@@ -48,6 +49,21 @@
         var regex8 = /4\)\.setValue\("8"\)/g;
         var regex9 = /4\)\.setValue\("9"\)/g;
         var regex10 = /4\)\.setValue\("10"\)/g;
+        var regexElement1 = /<font style='font-weight:normal;font-size:11px;'>\s*Наставник:\s*<\/font>\s*<font style='font-weight:bold;font-size:12px;'>(.*?)<\/font>/;
+        
+        //Matchuj elemente
+        var matchElement1 = htmlText.match(regexElement1);
+
+        //Provera da li su matchovani
+        if (matchElement1) {
+          element1 = matchElement1[1].trim();
+          parsedElements = element1.split(' ');
+          parsedElements.pop();
+          parsedElements = parsedElements.join(' ');
+          $('#parsedElements').text(parsedElements);
+        } else {
+          $('#parsedElements').text("/");
+        }
 
         // Prebroj instance
         countND = (htmlText.match(regexND) || []).length;
@@ -73,7 +89,7 @@
         $('#prol').text(prol.toFixed(2).replace(".", ",").replace("NaN", 0) + '%');
         $('#prij').text(prij);
         if ($('#autoResetCheckbox').is(':checked')) {
-          $('#htmlTextArea').val('');5
+          $('#htmlTextArea').val('');
         }
       });
         // Reset dugme
@@ -88,6 +104,7 @@
         $('#count10').text('');
         $('#prol').text('');
         $('#prij').text('');
+        $('#parsedElements').text("");
       });
     });
   </script>
@@ -106,6 +123,7 @@
   </fieldset>
   <h2>Rezultati analize:</h2>
   <fieldset>
+  <span id="parsedElements" align="center"></span>
   <table align="center">
     <tr>
       <th>ND:</th>
