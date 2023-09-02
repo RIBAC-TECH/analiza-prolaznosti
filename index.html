@@ -39,7 +39,7 @@
         var count8 = 0;
         var count9 = 0;
         var count10 = 0;
-        var element1, element2, element3;
+        var element1, element2;
 
         // Pronadji tekst
         var regexND = /4\)\.setValue\("ND"\)/g;
@@ -50,9 +50,11 @@
         var regex9 = /4\)\.setValue\("9"\)/g;
         var regex10 = /4\)\.setValue\("10"\)/g;
         var regexElement1 = /<font style='font-weight:normal;font-size:11px;'>\s*Наставник:\s*<\/font>\s*<font style='font-weight:bold;font-size:12px;'>(.*?)<\/font>/;
+        var regexElement2 = /<font style='font-weight:normal;font-size:11px;'>\s*Испитни рок:\s*<\/font>\s*<font style='font-weight:bold;font-size:12px;'>(.*?)<\/font>/;
         
         //Matchuj elemente
         var matchElement1 = htmlText.match(regexElement1);
+        var matchElement2 = htmlText.match(regexElement2);
 
         //Provera da li su matchovani
         if (matchElement1) {
@@ -62,7 +64,15 @@
           parsedElements = parsedElements.join(' ');
           $('#parsedElements').text(parsedElements);
         } else {
-          $('#parsedElements').text("/");
+          $('#parsedElements').text("");
+        }
+        if (matchElement2) {
+          element2 = matchElement2[1].trim();
+          element2 = element2.substring(0, 3);
+          $('#parsedElements2').text(element2);
+        }
+        else{
+          $('#parsedElements2').text("");
         }
 
         // Prebroj instance
@@ -104,7 +114,8 @@
         $('#count10').text('');
         $('#prol').text('');
         $('#prij').text('');
-        $('#parsedElements').text("");
+        $('#parsedElements').text('');
+        $('#parsedElements2').text('');
       });
     });
   </script>
@@ -123,7 +134,7 @@
   </fieldset>
   <h2>Rezultati analize:</h2>
   <fieldset>
-  <span id="parsedElements" align="center"></span>
+  <span id="parsedElements2" align="center"></span> || <span id="parsedElements" align="center"></span>
   <table align="center">
     <tr>
       <th>ND:</th>
