@@ -41,7 +41,6 @@
         var count8 = 0;
         var count9 = 0;
         var count10 = 0;
-        var element1, element2;
 
         // Pronadji tekst
         var regexND = /4\)\.setValue\("ND"\)/g;
@@ -51,29 +50,31 @@
         var regex8 = /4\)\.setValue\("8"\)/g;
         var regex9 = /4\)\.setValue\("9"\)/g;
         var regex10 = /4\)\.setValue\("10"\)/g;
-        var regexElement1 = /<font style='font-weight:normal;font-size:11px;'>\s*Наставник:\s*<\/font>\s*<font style='font-weight:bold;font-size:12px;'>(.*?)<\/font>/;
+
+        // Pretraga roka i nastavnika
+        var regexElement1All = /<font style='font-weight:normal;font-size:11px;'>\s*Наставник:\s*<\/font>\s*<font style='font-weight:bold;font-size:12px;'>(.*?)<\/font>/g;
         var regexElement2 = /<font style='font-weight:normal;font-size:11px;'>\s*Испитни рок:\s*<\/font>\s*<font style='font-weight:bold;font-size:12px;'>(.*?)<\/font>/;
-        
-        //Matchuj elemente
-        var matchElement1 = htmlText.match(regexElement1);
+
+        // Pronadji sve instance nastavnika
+        var allMatchesElement1 = htmlText.matchAll(regexElement1All);
+        var allTeachers = new Set();  // Kreiraj Set
+
+        for (const match of allMatchesElement1) {
+            var teacher = match[1].trim();
+            var parsedTeacher = teacher.split(' ').slice(0, -1).join(' ');
+            allTeachers.add(parsedTeacher);  // Dodaj u Set; zanemari duplikate
+        }
+
+        $('#parsedElements').text(Array.from(allTeachers).join(', '));
+
+        // Matchuj elemente
         var matchElement2 = htmlText.match(regexElement2);
 
-        //Provera da li su matchovani
-        if (matchElement1) {
-          element1 = matchElement1[1].trim();
-          parsedElements = element1.split(' ');
-          parsedElements.pop();
-          parsedElements = parsedElements.join(' ');
-          $('#parsedElements').text(parsedElements);
-        } else {
-          $('#parsedElements').text("");
-        }
         if (matchElement2) {
-          element2 = matchElement2[1].trim();
-          element2 = element2.substring(0, 3);
-          $('#parsedElements2').text(element2);
-        }
-        else{
+          var element2 = matchElement2[1].trim();
+          var parsedElement2 = element2.substring(0, 3);
+          $('#parsedElements2').text(parsedElement2);
+        } else {
           $('#parsedElements2').text("");
         }
 
@@ -88,7 +89,7 @@
 
         // Izracunaj prolaznost i broj prijavljenih
         var prol = ((count6 + count7 + count8 + count9 + count10) / (count5 + count6 + count7 + count8 + count9 + count10)) * 100;
-        var prij = count5 + count6 + count7 + count8 + count9 + count10
+        var prij = count5 + count6 + count7 + count8 + count9 + count10;
 
         // Prikazi rezultate & auto reset
         $('#countND').text(countND);
@@ -104,8 +105,9 @@
           $('#htmlTextArea').val('');
         }
       });
-        // Reset dugme
-        $('#resetButton').click(function() {
+
+      // Reset dugme
+      $('#resetButton').click(function() {
         $('#htmlTextArea').val('');
         $('#countND').text('');
         $('#count5').text('');
