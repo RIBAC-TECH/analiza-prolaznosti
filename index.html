@@ -90,6 +90,7 @@
         // Izracunaj prolaznost i broj prijavljenih
         var prol = ((count6 + count7 + count8 + count9 + count10) / (count5 + count6 + count7 + count8 + count9 + count10)) * 100;
         var prij = count5 + count6 + count7 + count8 + count9 + count10;
+        var polo = count6 + count7 + count8 + count9 + count10;
 
         // Prikazi rezultate & auto reset
         $('#countND').text(countND);
@@ -101,6 +102,7 @@
         $('#count10').text(count10);
         $('#prol').text(prol.toFixed(2).replace(".", ",").replace("NaN", 0) + '%');
         $('#prij').text(prij);
+        $('#polo').text(polo);
         if ($('#autoResetCheckbox').is(':checked')) {
           $('#htmlTextArea').val('');
         }
@@ -118,6 +120,7 @@
         $('#count10').text('');
         $('#prol').text('');
         $('#prij').text('');
+        $('#polo').text('');
         $('#parsedElements').text('');
         $('#parsedElements2').text('');
       });
@@ -126,22 +129,22 @@
 </head>
 <body>
   <div class="container">
-  <h1>ANALIZA PROLAZNOSTI</h1>
+  <h1>АНАЛИЗА ПРОЛАЗНОСТИ</h1>
   <fieldset>
-    <legend>Ovde unesite HTML kod</legend>
+    <legend>Овде унесите HTML код</legend>
   <textarea id="htmlTextArea" rows="9" cols="50" style="resize: none;"></textarea>
   <br>
-  <button id="analyzeButton">Analiziraj</button>
-  <button id="resetButton">Resetuj</button><br>
+  <button id="analyzeButton">Анализирај</button>
+  <button id="resetButton">Ресетуј</button><br>
   <input type="checkbox" id="autoResetCheckbox">
-  <label for="autoResetCheckbox">Auto reset</label>
+  <label for="autoResetCheckbox">Ауто ресет</label>
   </fieldset>
-  <h2>Rezultati analize:</h2>
+  <h2>Резултати анализе:</h2>
   <fieldset>
   <span id="parsedElements2" align="center"></span> || <span id="parsedElements" align="center"></span>
   <table align="center">
     <tr>
-      <th>ND</th>
+      <th>НД</th>
       <td><span id="countND"></span></td>
     </tr>
     <tr>
@@ -169,12 +172,12 @@
       <td><span id="count10"></span></td>
     </tr>
   </table>
-  <p>Polagalo: <span id="prij"></span> || Prolaznost: <span id="prol"></span></p>
+  <p>Полагало: <span id="prij"></span> || Положило: <span id="polo"></span> || Пролазност: <span id="prol"></span></p>
   </fieldset>
   <br>
   <details>
-    <summary>Uputstvo</summary>
-    Nakon što otvorite rezultate (obavezno na računaru, ovaj postupak nije moguć na mobilnim uređajima), kliknite desnim tasterom miša na bilo koje mesto u tabeli i odaberite opciju "View page source". Otvoriće se prozor sa HTML kodom stranice sa rezultatima. Kopirajte ceo kod u polje na vrhu ove stranice i kliknite "Analiziraj". 
+    <summary>Упутство</summary>
+    Након што отворите резултате (обавезно на рачунару, овај поступак није могућ на мобилним уређајима), кликните десним тастером миша на било које место у табели и одаберите опцију "View page source". Отвориће се прозор са HTML кодом странице са резултатима. Kопирајте цео код (не линк!) у поље на врху ове странице и кликните "Анализирај". 
   </details>
 </div>
 </body>
