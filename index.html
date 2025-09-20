@@ -33,6 +33,13 @@
       $('#analyzeButton').click(function() {
         var htmlText = $('#htmlTextArea').val();
 
+        // Filter i validacija
+        var filter = $('#filterInput').val().trim();
+        if (filter.length > 0 && !/^\/\d{2}$/.test(filter)) {
+          alert('Грешка: филтер мора имати тачно 3 карактера, и то у облику /NN где су NN цифре (нпр. /20).');
+          return;
+        }
+
         // Inicijalne promenljive
         var countND = 0;
         var count5 = 0;
@@ -57,37 +64,59 @@
 
         // Pronadji sve instance nastavnika
         var allMatchesElement1 = htmlText.matchAll(regexElement1All);
-        var allTeachers = new Set();  // Kreiraj Set
+        var allTeachers = new Set();
 
         for (const match of allMatchesElement1) {
             var teacher = match[1].trim();
             var parsedTeacher = teacher.split(' ').slice(0, -1).join(' ');
-            allTeachers.add(parsedTeacher);  // Dodaj u Set; zanemari duplikate
+            allTeachers.add(parsedTeacher);
         }
-
         $('#parsedElements').text(Array.from(allTeachers).join(', '));
 
-        // Matchuj elemente
+        // Matchuj elemente (ispitni rok)
         var matchElement2 = htmlText.match(regexElement2);
-
         if (matchElement2) {
           var element2 = matchElement2[1].trim();
           var parsedElement2 = element2.substring(0, 3);
-          $('#parsedElements2').text(parsedElement2);
+          if (filter) {
+            $('#parsedElements2').text(parsedElement2 + " || Само " + filter);
+          } else {
+            $('#parsedElements2').text(parsedElement2);
+          }
         } else {
           $('#parsedElements2').text("");
         }
 
-        // Prebroj instance
-        countND = (htmlText.match(regexND) || []).length;
-        count5 = (htmlText.match(regex5) || []).length;
-        count6 = (htmlText.match(regex6) || []).length;
-        count7 = (htmlText.match(regex7) || []).length;
-        count8 = (htmlText.match(regex8) || []).length;
-        count9 = (htmlText.match(regex9) || []).length;
-        count10 = (htmlText.match(regex10) || []).length;
+        // Pronađi redove koji odgovaraju filteru
+        var matchingRows = new Set();
+        var indexRegex = /mygrid\.cells\(\s*(\d+)\s*,\s*1\s*\)\.setValue\(\s*"([^"]*)"\s*\)/g;
+        var m;
+        while ((m = indexRegex.exec(htmlText)) !== null) {
+          var rowNum = m[1];
+          var indexValue = m[2].trim();
+          if (!filter || indexValue.slice(-3) === filter) {
+            matchingRows.add(rowNum);
+          }
+        }
 
-        // Izracunaj prolaznost i broj prijavljenih
+        // Prebroj ocene samo za odgovarajuće redove
+        var gradeRegex = /mygrid\.cells\(\s*(\d+)\s*,\s*4\s*\)\.setValue\(\s*"([^"]*)"\s*\)/g;
+        var gm;
+        while ((gm = gradeRegex.exec(htmlText)) !== null) {
+          var row = gm[1];
+          var gradeVal = gm[2].trim();
+          if (matchingRows.has(row)) {
+            if (gradeVal === "ND") countND++;
+            else if (gradeVal === "5") count5++;
+            else if (gradeVal === "6") count6++;
+            else if (gradeVal === "7") count7++;
+            else if (gradeVal === "8") count8++;
+            else if (gradeVal === "9") count9++;
+            else if (gradeVal === "10") count10++;
+          }
+        }
+
+        // Izračunaj prolaznost i broj prijavljenih
         var prol = ((count6 + count7 + count8 + count9 + count10) / (count5 + count6 + count7 + count8 + count9 + count10)) * 100;
         var prij = count5 + count6 + count7 + count8 + count9 + count10;
         var polo = count6 + count7 + count8 + count9 + count10;
@@ -111,6 +140,7 @@
       // Reset dugme
       $('#resetButton').click(function() {
         $('#htmlTextArea').val('');
+        $('#filterInput').val('');
         $('#countND').text('');
         $('#count5').text('');
         $('#count6').text('');
@@ -136,6 +166,8 @@
   <br>
   <button id="analyzeButton">Анализирај</button>
   <button id="resetButton">Ресетуј</button><br>
+  <label for="filterInput">Филтер генерације (/NN): </label>
+  <input id="filterInput" type="text" maxlength="3" size="1"/><br>
   <input type="checkbox" id="autoResetCheckbox">
   <label for="autoResetCheckbox">Ауто ресет</label>
   </fieldset>
